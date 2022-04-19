@@ -88,14 +88,16 @@ data "tfe_workspace" "iac-hetzner-dev" {
 
 resource "tfe_variable" "iac-hetzner-dev-aws-key" {
   key          = "aws_key"
-  value        = aws_iam_access_key.iac-hetzner-dev-pipeline-creds.id
+  sensitive    = true
+  value        = resource.aws_iam_access_key.iac-hetzner-dev-pipeline-creds.id
   category     = "terraform"
   workspace_id = data.tfe_workspace.iac-hetzner-dev.id
 }
 
 resource "tfe_variable" "iac-hetzner-dev-aws-secret" {
   key          = "aws_secret"
-  value        = aws_iam_access_key.iac-hetzner-dev-pipeline-creds.secret
+  sensitive    = true
+  value        = resource.aws_iam_access_key.iac-hetzner-dev-pipeline-creds.secret
   category     = "terraform"
   workspace_id = data.tfe_workspace.iac-hetzner-dev.id
 }

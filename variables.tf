@@ -10,3 +10,7 @@ variable "aws_role" {
   type = string
   sensitive = true
 }
+variable "tfc_token" {
+  type = string
+  sensitive = true
+}

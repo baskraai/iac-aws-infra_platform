@@ -3,10 +3,12 @@ resource "aws_iam_user" "iac-hetzner-dev_pipeline-user" {
 }
 
 resource "aws_iam_access_key" "iac-hetzner-dev_pipeline_creds" {
+  #ts:skip=AWS.IamUser.IAM.High.0391 Creds are made sensitive and only added to workspaces secrets
   user = aws_iam_user.iac-hetzner-dev_pipeline-user.name
 }
 
 resource "aws_iam_user_policy" "iac-hetzner-dev_iam_assume_policy" {
+  #ts:skip=AWS.AIUP.IAM.MEDIUM.0049 Only allow user to assume role
   name = "iac-hetzner-dev-secret-role_assume"
   user = aws_iam_user.iac-hetzner-dev_pipeline-user.name
   policy = <<EOF

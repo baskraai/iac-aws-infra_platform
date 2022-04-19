@@ -29,29 +29,24 @@ EOF
 resource "aws_iam_policy" "iac-hetzner-dev-role-policies" {
   name        = "iac-hetzner-dev"
   policy      = jsonencode({
-      "Version": "2012-10-17",
-      "Statement": [
-          {
-              "Sid": "VisualEditor0",
-              "Effect": "Allow",
-              "Action": [
-                  "secretsmanager:UntagResource",
-                  "secretsmanager:GetSecretValue",
-                  "secretsmanager:DescribeSecret",
-                  "secretsmanager:PutSecretValue",
-                  "secretsmanager:ListSecretVersionIds",
-                  "secretsmanager:TagResource",
-                  "secretsmanager:UpdateSecret"
-              ],
-              "Resource": "arn:aws:secretsmanager:eu-central-1:${data.aws_caller_identity.current.account_id}:secret:${aws_secretsmanager_secret.iac-hetzner-dev.name}"
-          },
-          {
-              "Sid": "VisualEditor1",
-              "Effect": "Allow",
-              "Action": "secretsmanager:ListSecrets",
-              "Resource": "*"
-          }
-      ]
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "secretsmanager:GetRandomPassword",
+                "secretsmanager:ListSecrets"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": "secretsmanager:*",
+            "Resource": "arn:aws:secretsmanager:eu-central-1:${data.aws_caller_identity.current.account_id}:secret:${aws_secretsmanager_secret.iac-hetzner-dev.name}"
+        }
+    ]
   })
 }
 

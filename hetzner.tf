@@ -76,7 +76,7 @@ resource "aws_iam_role" "iac-hetzner-dev-role" {
 }
 
 resource "aws_iam_role_policy_attachment" "iac-hetzner-dev-policy-role-attach" {
-  role       = aws_iam_role.iac-hetzner-dev_role.name
+  role       = aws_iam_role.iac-hetzner-dev-role.name
   policy_arn = aws_iam_policy.iac-hetzner-dev-role-policies.arn
 }
 

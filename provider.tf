@@ -16,3 +16,7 @@ provider "aws" {
     role_arn     = var.aws_role
   }
 }
+
+provider "tfe" {
+  token = var.tfc_token
+}

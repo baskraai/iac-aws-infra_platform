@@ -39,13 +39,11 @@ resource "aws_iam_policy" "iac-hetzner-dev-role-policies" {
                   "secretsmanager:GetSecretValue",
                   "secretsmanager:DescribeSecret",
                   "secretsmanager:PutSecretValue",
-                  "secretsmanager:CreateSecret",
-                  "secretsmanager:DeleteSecret",
                   "secretsmanager:ListSecretVersionIds",
                   "secretsmanager:TagResource",
                   "secretsmanager:UpdateSecret"
               ],
-              "Resource": "arn:aws:secretsmanager:eu-central-1:${data.aws_caller_identity.current.account_id}:secret:iac-hetzner-dev"
+              "Resource": "arn:aws:secretsmanager:eu-central-1:${data.aws_caller_identity.current.account_id}:secret:${aws_secretsmanager_secret.iac-hetzner-dev.name}"
           },
           {
               "Sid": "VisualEditor1",
@@ -108,4 +106,9 @@ resource "tfe_variable" "iac-hetzner-dev-aws-role" {
   value        = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${aws_iam_role.iac-hetzner-dev-role.name}"
   category     = "terraform"
   workspace_id = data.tfe_workspace.iac-hetzner-dev.id
+}
+
+resource "aws_secretsmanager_secret" "iac-hetzner-dev" {
+  #ts:skip=AC_AWS_0500 No need for test-creds to be encrypted
+  name = "iac-hetzner-dev-config"
 }

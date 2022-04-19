@@ -44,7 +44,7 @@ resource "aws_iam_policy" "iac-hetzner-dev-role-policies" {
             "Sid": "VisualEditor1",
             "Effect": "Allow",
             "Action": "secretsmanager:*",
-            "Resource": "arn:aws:secretsmanager:eu-central-1:${data.aws_caller_identity.current.account_id}:secret:${aws_secretsmanager_secret.iac-hetzner-dev.name}"
+            "Resource": aws_secretsmanager_secret.iac-hetzner-dev.arn
         }
     ]
   })

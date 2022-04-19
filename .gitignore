@@ -30,3 +30,6 @@ override.tf.json
 
 # Backend config
 *backend.tf
+
+# Terraform version lock
+.terraform.lock.hcl

@@ -1,32 +1,32 @@
-resource "aws_iam_user" "iac-hetzner-dev_pipeline-user" {
+resource "aws_iam_user" "iac-hetzner-dev-pipeline-user" {
   name = "iac-hetzner-dev"
 }
 
-resource "aws_iam_access_key" "iac-hetzner-dev_pipeline_creds" {
+resource "aws_iam_access_key" "iac-hetzner-dev-pipeline-creds" {
   #ts:skip=AC_AWS_0133 Creds are made sensitive and only added to workspaces secrets
-  user = aws_iam_user.iac-hetzner-dev_pipeline-user.name
+  user = aws_iam_user.iac-hetzner-dev-pipeline-user.name
 }
 
-resource "aws_iam_user_policy" "iac-hetzner-dev_iam_assume_policy" {
+resource "aws_iam_user_policy" "iac-hetzner-dev-iam-assume-policy" {
   #ts:skip=AC_AWS_0475 Only allow user to assume role
   name = "iac-hetzner-dev-secret-role_assume"
-  user = aws_iam_user.iac-hetzner-dev_pipeline-user.name
+  user = aws_iam_user.iac-hetzner-dev-pipeline-user.name
   policy = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "role_iac-hetzner-dev-secret",
+            "Sid": "RoleIaCHetznerDevSecret",
             "Effect": "Allow",
             "Action": "sts:AssumeRole",
-            "Resource": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${aws_iam_role.iac-hetzner-dev_role.name}"
+            "Resource": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${aws_iam_role.iac-hetzner-dev-role.name}"
         }
     ]
 }
 EOF
 }
 
-resource "aws_iam_policy" "iac-hetzner-dev_role_policies" {
+resource "aws_iam_policy" "iac-hetzner-dev-role-policies" {
   name        = "iac-hetzner-dev"
   policy      = jsonencode({
       "Version": "2012-10-17",
@@ -57,7 +57,7 @@ resource "aws_iam_policy" "iac-hetzner-dev_role_policies" {
   })
 }
 
-resource "aws_iam_role" "iac-hetzner-dev_role" {
+resource "aws_iam_role" "iac-hetzner-dev-role" {
   name = "iac-hetzner-dev-secret"
 
   assume_role_policy = jsonencode({
@@ -75,9 +75,9 @@ resource "aws_iam_role" "iac-hetzner-dev_role" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "iac-hetzner-dev_policy-role-attach" {
+resource "aws_iam_role_policy_attachment" "iac-hetzner-dev-policy-role-attach" {
   role       = aws_iam_role.iac-hetzner-dev_role.name
-  policy_arn = aws_iam_policy.iac-hetzner-dev_role_policies.arn
+  policy_arn = aws_iam_policy.iac-hetzner-dev-role-policies.arn
 }
 
 
@@ -88,14 +88,14 @@ data "tfe_workspace" "iac-hetzner-dev" {
 
 resource "tfe_variable" "iac-hetzner-dev-aws-key" {
   key          = "aws_key"
-  value        = aws_iam_access_key.iac-hetzner-dev_pipeline_creds.id
+  value        = aws_iam_access_key.iac-hetzner-dev-pipeline-creds.id
   category     = "terraform"
   workspace_id = data.tfe_workspace.iac-hetzner-dev.id
 }
 
 resource "tfe_variable" "iac-hetzner-dev-aws-secret" {
   key          = "aws_secret"
-  value        = aws_iam_access_key.iac-hetzner-dev_pipeline_creds.secret
+  value        = aws_iam_access_key.iac-hetzner-dev-pipeline-creds.secret
   category     = "terraform"
   workspace_id = data.tfe_workspace.iac-hetzner-dev.id
 }

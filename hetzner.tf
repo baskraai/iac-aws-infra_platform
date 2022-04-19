@@ -110,5 +110,5 @@ resource "tfe_variable" "iac-hetzner-dev-aws-role" {
 
 resource "aws_secretsmanager_secret" "iac-hetzner-dev" {
   #ts:skip=AC_AWS_0500 No need for test-creds to be encrypted
-  name = "iac-hetzner-dev"
+  name = "iac-hetzner-dev-config"
 }

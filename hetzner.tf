@@ -101,3 +101,11 @@ resource "tfe_variable" "iac-hetzner-dev-aws-secret" {
   category     = "terraform"
   workspace_id = data.tfe_workspace.iac-hetzner-dev.id
 }
+
+resource "tfe_variable" "iac-hetzner-dev-aws-role" {
+  key          = "aws_role"
+  sensitive    = true
+  value        = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${aws_iam_role.iac-hetzner-dev-role.name}"
+  category     = "terraform"
+  workspace_id = data.tfe_workspace.iac-hetzner-dev.id
+}
